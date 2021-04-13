@@ -6,22 +6,22 @@ const { User } = require('../models');
 exports.authenticateUser = async(req, res, next) => {
     let message;
     const credentials = auth(req);
-    console.log('Hi 1');
 
+    // Confirm credentials have been set
     if (credentials) {
+        // If credentials exist, find the corresponding user
         const user = await User.findOne({where: {emailAddress: credentials.name} });
-        console.log('Hi 2');
-        console.log(credentials);
 
+        // Confirm corresponding user exists
         if (user) {
+            // Compare the user's password to the authenticated user's password
             const authenticated = bcrypt.compareSync(credentials.pass, user.password);
-            console.log(`${credentials.pass}, ${user.password}`);
-            console.log('Hi 3');
 
+            // Confirm passwords match
             if (authenticated) {
+                // Authentication is successful authenticated user is set to request's current user
                 console.log(`Authenication successful for email address: ${credentials.name}`);
                 req.currentUser = user;
-                console.log('Hi 4');
             } else {
                 message = `Authentication failed for email address: ${credentials.name}`;
             }
@@ -32,6 +32,7 @@ exports.authenticateUser = async(req, res, next) => {
         message = `Auth header not found`;
     }
 
+    // If there is an error send 401 error and message
     if (message) {
         res.status(401).json({message: message});
     } else {

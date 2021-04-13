@@ -19,11 +19,12 @@ app.use(morgan('dev'));
 // Setup request body JSON parsing.
 app.use(express.json());
 
+// Sync database=
 (async () => {
   try {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     console.log('Synchronizing the models with the database');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
@@ -37,6 +38,7 @@ app.get('/', (req, res) => {
   });
 });
 
+// Route the API to the correct route based on URL
 app.use('/api/users', user);
 app.use('/api/courses', course);
 
