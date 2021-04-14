@@ -25,7 +25,7 @@ router.post('/', asyncHandler(async(req, res, next) => {
     try { 
         // Create new user based on request body
         await User.create( req.body );
-        res.status(201);
+        res.status(201).location('/').end();
     } catch(error) {
         res.error = error;
         next();

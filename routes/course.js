@@ -35,8 +35,8 @@ router.get('/:id', asyncHandler(async(req, res) => {
 router.post('/', authenticateUser, asyncHandler(async(req, res, next) => {
     try {
         // Create new course based on request body
-        await Course.create( req.body );
-        res.status(201).json({message: 'Course created'});
+        const course = await Course.create( req.body );
+        res.status(201).location(`/course/${course.id}`).end();
     }  catch(error) {
         res.error = error;
         next();
