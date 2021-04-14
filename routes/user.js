@@ -1,5 +1,4 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
 const db = require('../models');
 const User = db.User;
 const { asyncHandler, validationErrorHandler } = require('../middleware/routing-helpers');
