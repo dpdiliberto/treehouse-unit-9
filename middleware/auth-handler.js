@@ -3,6 +3,7 @@ const auth = require('basic-auth');
 const bcrypt = require('bcrypt');
 const { User } = require('../models');
 
+// Function for authenticating user
 exports.authenticateUser = async(req, res, next) => {
     let message;
     const credentials = auth(req);
@@ -34,7 +35,7 @@ exports.authenticateUser = async(req, res, next) => {
 
     // If there is an error send 401 error and message
     if (message) {
-        res.status(401).json({message: message});
+        res.status(401).json({message: 'Access denied'});
     } else {
         next();
     }

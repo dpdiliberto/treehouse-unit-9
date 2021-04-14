@@ -2,9 +2,8 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const db = require('../models');
 const User = db.User;
-const { asyncHandler } = require('../middleware/async-handler');
+const { asyncHandler, validationErrorHandler } = require('../middleware/routing-helpers');
 const { authenticateUser } = require('../middleware/auth-handler');
-const { validationErrorHandler } = require('../middleware/validation-error-handler')
 
 // Construct a router instance
 const router = express.Router();
@@ -22,20 +21,15 @@ router.get('/', authenticateUser, asyncHandler(async(req, res) => {
 }));
 
 // Router that creates a new user
-router.post('/', asyncHandler(async(req, res) => {
+router.post('/', asyncHandler(async(req, res, next) => {
     try { 
         // Create new user based on request body
         await User.create( req.body );
-        res.status(201).json({"message": "User successfully created!"});
+        res.status(201);
     } catch(error) {
-        validationErrorHandler(error);
-        // if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
-        //     const errors = error.errors.map(err => err.message);
-        //     res.status(400).json({ errors });
-        // } else {
-        //     throw error;
-        // }
+        res.error = error;
+        next();
     }
-}));
+}), validationErrorHandler);
 
 module.exports = router;
