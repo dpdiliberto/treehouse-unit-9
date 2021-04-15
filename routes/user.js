@@ -1,7 +1,7 @@
 const express = require('express');
 const db = require('../models');
 const User = db.User;
-const { asyncHandler, validationErrorHandler } = require('../middleware/routing-helpers');
+const { asyncHandler, validationErrorHandler } = require('../middleware/router-helpers');
 const { authenticateUser } = require('../middleware/auth-handler');
 
 // Construct a router instance

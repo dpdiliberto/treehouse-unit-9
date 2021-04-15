@@ -1,6 +1,6 @@
 const express = require('express');
 const { User, Course } = require('../models');
-const { asyncHandler, actionHandler, validationErrorHandler } = require('../middleware/routing-helpers');
+const { asyncHandler, actionHandler, validationErrorHandler } = require('../middleware/router-helpers');
 const { authenticateUser } = require('../middleware/auth-handler');
 
 // Construct a router instance

@@ -12,7 +12,9 @@ exports.asyncHandler = (cb) => {
     }
   }
 
-// Handler function to update or delete a resource depending on inputted action
+/** Handler function to update or delete a resource depending on inputted action
+* @param string - action that will be taken - can be 'update' or 'delete
+*/ 
 exports.actionHandler = function(action) {
   return async (req, res, next) => {
     try {
@@ -29,15 +31,13 @@ exports.actionHandler = function(action) {
 
         // Check if course exists to delete it or respond with 404
         if (course) {
-
             // Create variables for the authenticated user's id and for the course's user id
             const authUserId = req.currentUser.dataValues.id
             const courseUserId = course.dataValues.User.dataValues.id;
 
             // Confirm authenticated user matches course's user
             if (authUserId === courseUserId){
-
-                // Make action based on parameter
+                // Take action based on parameter
                 if (action === 'update') {
                   await course.update(req.body);
                   res.status(204).json();
@@ -58,7 +58,7 @@ exports.actionHandler = function(action) {
   }
 };
 
-// Function to check for, validation errors, map them, and display them to user
+// Function to check for validation errors, map them, and display them to user
 exports.validationErrorHandler = (req, res) => {
   if (res.error.name === 'SequelizeValidationError' || res.error.name === 'SequelizeUniqueConstraintError') {
       const errors = res.error.errors.map(err => err.message);
