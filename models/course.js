@@ -51,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
     materialsNeeded: DataTypes.STRING
   }, {
     sequelize,
+    timestamps: false,
     modelName: 'Course',
   });
   return Course;
